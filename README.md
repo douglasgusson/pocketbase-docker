@@ -13,7 +13,7 @@ curl -L https://fly.io/install.sh | sh
 ```fish
 # ~/.config/fish/config.fish
 
-set -gx FLYCTL_INSTALL "/home/arco/.fly"
+set -gx FLYCTL_INSTALL "/home/$USER/.fly"
 set -gx PATH "$FLYCTL_INSTALL/bin" $PATH
 ``` 
 
