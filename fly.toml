@@ -1,45 +1,41 @@
-# fly.toml file generated for pocketbase-deploy-teste on 2022-11-25T13:53:32-03:00
+# fly.toml app configuration file generated for pb-jilo on 2023-09-04T09:41:15-03:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
 
-app = "pocketbase-deploy-teste"
+app = "pb-jilo"
+primary_region = "gig"
 kill_signal = "SIGINT"
-kill_timeout = 5
-processes = []
-
-[env]
+kill_timeout = "5s"
 
 [experimental]
-  allowed_public_ports = []
   auto_rollback = true
 
-[mounts]
-  destination = "/pb/pb_data"
-  source = "pb_data"
+[build]
 
-[build.args]
-  PB_VERSION="0.8.0"
+[[mounts]]
+  source = "pb_data"
+  destination = "/pb/pb_data"
 
 [[services]]
-  http_checks = []
+  protocol = "tcp"
   internal_port = 8080
   processes = ["app"]
-  protocol = "tcp"
-  script_checks = []
+
+  [[services.ports]]
+    port = 80
+    handlers = ["http"]
+    force_https = true
+
+  [[services.ports]]
+    port = 443
+    handlers = ["tls", "http"]
   [services.concurrency]
+    type = "connections"
     hard_limit = 25
     soft_limit = 20
-    type = "connections"
-
-  [[services.ports]]
-    force_https = true
-    handlers = ["http"]
-    port = 80
-
-  [[services.ports]]
-    handlers = ["tls", "http"]
-    port = 443
 
   [[services.tcp_checks]]
-    grace_period = "1s"
     interval = "15s"
-    restart_limit = 0
     timeout = "2s"
+    grace_period = "1s"
